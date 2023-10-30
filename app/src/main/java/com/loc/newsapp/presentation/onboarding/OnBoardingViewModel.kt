@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class OnBoardingViewModel @Inject constructor(
+class OnBoardingViewModel @Inject constructor(    //when we use inject constructor, if all the arguements to the constructor can be 'provided' by dagger, then dagger can provide this class also, no need to write a provides function for this class, its automatic
     private val appEntryUseCases: AppEntryUseCases
 ): ViewModel() {
 
@@ -17,9 +17,6 @@ class OnBoardingViewModel @Inject constructor(
         when(event){
             is OnBoardingEvent.SaveAppEntry ->{
                 saveAppEntry()
-            }
-            else ->{
-
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.loc.newsapp.domain.usecases
+package com.loc.newsapp.domain.usecases.appEntry
 
 data class AppEntryUseCases(
     val saveAppEntry: SaveAppEntry,

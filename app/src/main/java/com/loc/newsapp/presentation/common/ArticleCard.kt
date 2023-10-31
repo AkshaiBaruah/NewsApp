@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -38,23 +39,28 @@ import com.loc.newsapp.presentation.dimens.VerySmallPadding1
 fun ArticleCard(
     modifier: Modifier = Modifier,
     article: Article,
-    onClick : () -> Unit
+    onClick : (() -> Unit)?=null
 ){
     val context = LocalContext.current
     Row(
-        modifier = modifier.clickable { onClick() }
+        modifier = modifier.clickable {
+            if (onClick != null) {
+                onClick()
+            }
+        }
     ) {
         AsyncImage(
-            modifier = modifier
+            modifier = Modifier
                 .size(ArticleSize)
                 .clip(MaterialTheme.shapes.medium),
-            model = ImageRequest.Builder(context).data( article.url),
-            contentDescription = null
+            model = ImageRequest.Builder(context).data(article.urlToImage).build(),
+            contentDescription = null,
+            contentScale = ContentScale.Crop
         )
 
         Column(
             verticalArrangement = Arrangement.SpaceAround ,
-            modifier = modifier
+            modifier = Modifier
                 .padding(horizontal = dimens.VerySmallPadding1)
                 .height(ArticleSize)
         ) {

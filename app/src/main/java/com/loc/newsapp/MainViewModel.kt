@@ -1,5 +1,6 @@
 package com.loc.newsapp
 
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -19,22 +20,24 @@ class MainViewModel @Inject constructor(
     appEntryUseCases: AppEntryUseCases
 ) : ViewModel() {
 
-    var isSplash by mutableStateOf(true)
-        private set       //public getter , private setter
 
-    var startDestination by mutableStateOf(Route.AppStartNaviation.route)
-        private set
+    private val _splashCondition = mutableStateOf(true)
+    var isSlpash: State<Boolean> = _splashCondition
+
+    private val _startDestination = mutableStateOf(Route.AppStartNaviation.route)
+    var startDestination: State<String> = _startDestination
 
     init {
-        appEntryUseCases.readAppEntry().onEach {appEntry ->
-            if(appEntry){
-                startDestination = Route.NewsNavigation.route
+        appEntryUseCases.readAppEntry().onEach { shouldStartFromHomeScreen ->
+            if(shouldStartFromHomeScreen){
+                _startDestination.value = Route.NewsNavigation.route
+            }else{
+                _startDestination.value = Route.AppStartNaviation.route
             }
-            else{
-                startDestination = Route.AppStartNaviation.route
-            }
-            delay(300)
-            isSplash = false
+            delay(300) //Without this delay, the onBoarding screen will show for a momentum.
+            _splashCondition.value = false
         }.launchIn(viewModelScope)
     }
+          //public getter , private setter
+
 }

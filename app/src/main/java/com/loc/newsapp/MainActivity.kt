@@ -19,16 +19,13 @@ class MainActivity : ComponentActivity() {
     val viewModel by viewModels<MainViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        installSplashScreen().apply {
-            setKeepOnScreenCondition{
-                viewModel.isSplash
-            }
-        }
+        installSplashScreen()
 
         setContent {
             NewsAppTheme {
                 Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)){
-                    val startDestination = viewModel.startDestination
+                    //val startDestination = viewModel.startDestination
+                    val startDestination = "appStartNavigation"
                     NavGraph(startDestination = startDestination)
                 }
             }

@@ -24,7 +24,6 @@ import com.loc.newsapp.presentation.common.NewsButton
 import com.loc.newsapp.presentation.dimens.MediumPadding1
 import com.loc.newsapp.presentation.dimens.VerySmallPadding1
 import com.loc.newsapp.presentation.onboarding.OnBoardingEvent
-import com.loc.newsapp.presentation.onboarding.models.pages
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)

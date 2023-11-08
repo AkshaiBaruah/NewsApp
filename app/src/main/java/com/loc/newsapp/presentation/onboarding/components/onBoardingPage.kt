@@ -22,9 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.loc.newsapp.R
-import com.loc.newsapp.presentation.onboarding.models.Page
 import com.loc.newsapp.presentation.dimens.SmallPadding2
-import com.loc.newsapp.presentation.onboarding.models.pages
 
 @Composable
 fun OnBoardingPage(modifier : Modifier, page : Page,){

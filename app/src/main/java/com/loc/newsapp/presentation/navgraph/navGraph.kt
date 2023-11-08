@@ -39,18 +39,18 @@ fun NavGraph(
             }
         }
 
-//        navigation(
-//            startDestination = Route.NewsNavigatorScreen.route,
-//            route = Route.NewsNavigation.route
-//        ){
-//            composable(
-//                route = Route.NewsNavigatorScreen.route
-//            ){
-////                val homeViewModel : HomeViewModel = hiltViewModel()
-////                val articles = homeViewModel.news.collectAsLazyPagingItems()
-////                HomeScreen(articles = articles, navigate = {})
-//                Text(text = " Homevscreeb")
-//            }
-//        }
+        navigation(
+            startDestination = Route.NewsNavigatorScreen.route,
+            route = Route.NewsNavigation.route
+        ){
+            composable(
+                route = Route.NewsNavigatorScreen.route
+            ){
+                val homeViewModel : HomeViewModel = hiltViewModel()
+                val articles = homeViewModel.news.collectAsLazyPagingItems()
+                HomeScreen(articles = articles, navigate = {})
+
+            }
+        }
     }
 }

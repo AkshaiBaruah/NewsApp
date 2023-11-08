@@ -1,6 +1,7 @@
 package com.loc.newsapp.presentation
 
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 object dimens {
     val TinyPadding = 2.dp
@@ -13,4 +14,7 @@ object dimens {
     val ArticleSize = 96.dp
     val SmallIconSize = 11.dp
     val IconSize = 20.dp
+    val LogoSize = 52.dp
+
+    val TitleSize = 26.sp
 }

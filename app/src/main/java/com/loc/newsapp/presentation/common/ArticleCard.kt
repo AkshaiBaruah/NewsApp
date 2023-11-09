@@ -87,7 +87,7 @@ fun ArticleCard(
                 Spacer(modifier = Modifier.width(VerySmallPadding1))
                 Text(
                     text = article.publishedAt,
-                    style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+                    style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
                     color = colorResource(id = R.color.text_title),
                 )
             }

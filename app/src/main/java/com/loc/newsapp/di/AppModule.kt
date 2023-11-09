@@ -48,6 +48,7 @@ object AppModule {
             .build()
             .create(NewsApi::class.java)
     }
+
     @Provides
     @Singleton
     fun provideNewsRepository(newsApi: NewsApi) : NewsRepository = NewsRepositoryImpl(newsApi)

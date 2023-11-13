@@ -2,14 +2,11 @@ package com.loc.newsapp.presentation.common
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.border
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -19,10 +16,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -33,37 +31,39 @@ import com.loc.newsapp.presentation.dimens
 import com.loc.newsapp.ui.theme.NewsAppTheme
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun SearchBar(
     modifier : Modifier = Modifier,
-    text : String,
+    queryText : String,
     readOnly : Boolean,
     onClick : (()->Unit)?=null,
     onValueChange : (String) -> Unit,
     onSearch :() -> Unit,
+    clearQueryTextCallback : ()->Unit
 
-){
-    val interactionSource = remember{
-        MutableInteractionSource()
-    }
-
-    val isClicked = interactionSource.collectIsPressedAsState().value
-    LaunchedEffect(key1 = isClicked){
-        if(isClicked){
-            onClick?.invoke()
-        }
-    }
-    
+    ){
+//    val interactionSource = remember{
+//        MutableInteractionSource()
+//    }
+//
+//    val isClicked = interactionSource.collectIsPressedAsState().value
+//    LaunchedEffect(key1 = isClicked){
+//        if(isClicked){
+//            onClick?.invoke()
+//        }
+//    }
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
     Box {
         TextField(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(dimens.VerySmallPadding1)
-                .border(1.dp , Color.Black , shape = MaterialTheme.shapes.extraLarge),
-            value = text,
+                .border(1.dp, Color.Black, shape = MaterialTheme.shapes.extraLarge),
+            value = queryText,
             onValueChange = onValueChange,
-            readOnly = readOnly,
+            readOnly = false,
             leadingIcon = {
                 Icon(
                     modifier = Modifier.size(dimens.IconSize),
@@ -93,11 +93,20 @@ fun SearchBar(
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(
                 onSearch = {
-                    onSearch()
+                    if(queryText.trim().isNotEmpty()){
+                        onSearch()
+                    }
+                    clearQueryTextCallback()
+                    // Close the keyboard
+                    keyboardController?.hide()
+                    // Remove the focus
+                    focusManager.clearFocus()
+                    //reset the queryText
+
                 }
             ),
             textStyle = MaterialTheme.typography.bodySmall,
-            interactionSource = interactionSource
+//            interactionSource = interactionSource
         )
     }
 }
@@ -107,7 +116,7 @@ fun SearchBar(
 @Composable
 fun SearchBarPreview() {
     NewsAppTheme {
-        SearchBar(text = "", onValueChange = {}, readOnly = false) {
+        SearchBar(queryText = "", onValueChange = {}, readOnly = false, onSearch = {} ) {
 
         }
     }

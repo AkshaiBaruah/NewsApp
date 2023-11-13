@@ -8,15 +8,15 @@ import com.loc.newsapp.data.remote.NewsPagingSource
 import com.loc.newsapp.data.remote.SearchNewsPagingSource
 import com.loc.newsapp.domain.model.Article
 import com.loc.newsapp.domain.repository.NewsRepository
+import com.loc.newsapp.util.constants
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
 class NewsRepositoryImpl (
     private val newsApi : NewsApi
 ) : NewsRepository {
     override fun getNews(sources: List<String>): Flow<PagingData<Article>> {
         return Pager(
-            config = PagingConfig(pageSize = 10),
+            config = PagingConfig(pageSize = constants.PAGE_SIZE),
             pagingSourceFactory = {
                 NewsPagingSource(
                     newsApi = newsApi,
@@ -28,7 +28,7 @@ class NewsRepositoryImpl (
 
     override fun searchNews(searchQuery: String, sources: List<String>): Flow<PagingData<Article>> {
         return Pager(
-            config = PagingConfig(pageSize = 10),
+            config = PagingConfig(pageSize = constants.PAGE_SIZE),
             pagingSourceFactory = {
                 SearchNewsPagingSource(
                     searchQuery = searchQuery,

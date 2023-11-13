@@ -21,15 +21,16 @@ class SearchNewsPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
         val page = params.key ?: 1
+        val pageSize = params.loadSize
         return try{
-            val newsResponse = newsApi.searchNews(searchQuery = searchQuery, page , sources , constants.API_KEY)
+            val newsResponse = newsApi.searchNews(searchQuery = searchQuery, page , sources , constants.API_KEY , pageSize)
             totalNewsCount += newsResponse.articles.size
             val articles = newsResponse.articles.distinctBy { it.title }
 
             LoadResult.Page(
                 data = articles,
                 nextKey = if(totalNewsCount == newsResponse.totalResults) null else page + 1,
-                prevKey = null
+                prevKey = if(page == 1) null else page -1
             )
         }
         catch (e : Exception){

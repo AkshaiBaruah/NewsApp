@@ -1,6 +1,5 @@
 package com.loc.newsapp.presentation.navgraph
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
@@ -8,8 +7,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.loc.newsapp.domain.model.Article
+import com.loc.newsapp.presentation.bookmark.BookmarkScreen
+import com.loc.newsapp.presentation.bookmark.BookmarkViewModel
 import com.loc.newsapp.presentation.home.HomeScreen
 import com.loc.newsapp.presentation.home.HomeViewModel
+import com.loc.newsapp.presentation.newsDetails.DetailsScreen
+import com.loc.newsapp.presentation.newsDetails.DetailsViewModel
 import com.loc.newsapp.presentation.onboarding.OnBoardingViewModel
 import com.loc.newsapp.presentation.onboarding.components.OnBoardingScreen
 
@@ -23,6 +27,14 @@ fun NavGraph(
     fun navigate(route : String){
         navController.navigate(route)
     }
+    fun navigateToDetails( article : Article){            //overloaded navigate function to detail screen
+        navController.currentBackStackEntry?.savedStateHandle?.set("article" , article)
+        navController.navigate(Route.DetailsScreen.route)
+    }
+    fun navigateToBookmark(){
+        navController.navigate(Route.BookmarkScreen.route)
+    }
+
     NavHost(navController = navController, startDestination = startDestination){
 
         navigation(
@@ -54,6 +66,12 @@ fun NavGraph(
                     articles = articles,
                     navigate = {
                         navigate(it)
+                    },
+                    onClickDetails = {
+                        navigateToDetails(it)
+                    },
+                    onClickBookmark = {
+                        navigateToBookmark()
                     }
                 )
 
@@ -65,8 +83,35 @@ fun NavGraph(
                 val homeViewModel : HomeViewModel = hiltViewModel()
                 homeViewModel.updateSearchQuery(searchQuery)
                 val articles = homeViewModel.searchedNews.collectAsLazyPagingItems()
-                HomeScreen(articles = articles, navigate ={ navigate(it)} )
+                HomeScreen(
+                    articles = articles,
+                    navigate = {navigate(it)},
+                    onClickDetails = {
+                        navigateToDetails(it)
+                    },
+                    onClickBookmark = {
+                        navigateToBookmark()
+                    }
+                )
+            }
+            composable(
+                route = Route.DetailsScreen.route,
+            ){
+                val detailsViewModel : DetailsViewModel = hiltViewModel()
+                navController.previousBackStackEntry?.savedStateHandle?.get<Article?>("article")?.let {
+                    DetailsScreen(article = it, event = detailsViewModel::onEvent , navigateUp = {navController.navigateUp()})
+                }
+            }
 
+            composable(
+                route = Route.BookmarkScreen.route,
+            ){
+                val bookmarkViewModel : BookmarkViewModel = hiltViewModel()
+                val state = bookmarkViewModel.state.value
+                BookmarkScreen(
+                    state = state,
+                    navigateToDetails = {navigateToDetails(it)}
+                )
             }
         }
     }

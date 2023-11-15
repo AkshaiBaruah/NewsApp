@@ -39,13 +39,13 @@ import com.loc.newsapp.presentation.dimens.VerySmallPadding1
 fun ArticleCard(
     modifier: Modifier = Modifier,
     article: Article,
-    onClick : (() -> Unit)?=null
+    onClick : ((Article) -> Unit) ?= null
 ){
     val context = LocalContext.current
     Row(
         modifier = modifier.clickable {
             if (onClick != null) {
-                onClick()
+                onClick(article)
             }
         }
     ) {

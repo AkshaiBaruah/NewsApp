@@ -25,6 +25,7 @@ import com.loc.newsapp.R
 import com.loc.newsapp.domain.model.Article
 import com.loc.newsapp.domain.model.Source
 import com.loc.newsapp.presentation.dimens
+import com.loc.newsapp.presentation.dimens.MediumPadding1
 import com.loc.newsapp.presentation.newsDetails.components.DetailsTopBar
 import com.loc.newsapp.ui.theme.NewsAppTheme
 
@@ -34,6 +35,7 @@ fun DetailsScreen (
     event: (DetailsEvent)->Unit,
     navigateUp : () -> Unit,
 ){
+
     val context = LocalContext.current
     Column(
         modifier = Modifier
@@ -43,7 +45,7 @@ fun DetailsScreen (
         DetailsTopBar(
             onBackClick = navigateUp,
             onBookmarkClick = {
-                event(DetailsEvent.saveArticle)
+                event(DetailsEvent.UpsertDeleteArticle(article))
             },
             onShareClick = {
                 Intent(Intent.ACTION_SEND).also {
@@ -80,7 +82,7 @@ fun DetailsScreen (
                         .clip(MaterialTheme.shapes.medium),
                     contentScale = ContentScale.Crop
                 )
-                //Spacer(modifier = Modifier.height(MediumPadding1))
+                Spacer(modifier = Modifier.height(MediumPadding1))
                 Text(
                     text = article.title,
                     style = MaterialTheme.typography.displaySmall,

@@ -6,8 +6,8 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.loc.newsapp.domain.model.Article
-
-import java.util.concurrent.Flow
+import com.loc.newsapp.util.constants
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface NewsDao {
@@ -18,6 +18,9 @@ interface NewsDao {
     @Delete
     suspend fun delete(article : Article)
 
-//    @Query("SELECT * FROM Article")
-//    fun getArticles() : Flow<List<Article>>
+    @Query("SELECT * FROM ${constants.BM_TABLE_NAME}")
+    fun getArticles() : Flow<List<Article>>
+
+    @Query("SELECT * FROM ${constants.BM_TABLE_NAME} WHERE url =:url")
+    suspend fun getArticleWithUrl(url : String) : Article?
 }

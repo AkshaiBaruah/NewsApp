@@ -14,4 +14,10 @@ interface NewsRepository {
         searchQuery: String,
         sources: List<String>
     ) : Flow<PagingData<Article>>
+
+    suspend fun upsertArticle(article : Article)
+    suspend fun deleteArticle(article : Article)
+    fun getArticle() : Flow<List<Article>>
+    suspend fun getArticleWithUrl(url : String) : Article?
+
 }

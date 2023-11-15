@@ -56,7 +56,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideNewsRepository(newsApi: NewsApi) : NewsRepository = NewsRepositoryImpl(newsApi)
+    fun provideNewsRepository(newsApi: NewsApi , newsDao: NewsDao) : NewsRepository = NewsRepositoryImpl(newsApi , newsDao)
 
 //removed this because NewsUseCases has @Inject constructor
 //    @Provides

@@ -1,6 +1,8 @@
 package com.loc.newsapp.presentation.navgraph
 
+import android.widget.Toast
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -12,6 +14,7 @@ import com.loc.newsapp.presentation.bookmark.BookmarkScreen
 import com.loc.newsapp.presentation.bookmark.BookmarkViewModel
 import com.loc.newsapp.presentation.home.HomeScreen
 import com.loc.newsapp.presentation.home.HomeViewModel
+import com.loc.newsapp.presentation.newsDetails.DetailsEvent
 import com.loc.newsapp.presentation.newsDetails.DetailsScreen
 import com.loc.newsapp.presentation.newsDetails.DetailsViewModel
 import com.loc.newsapp.presentation.onboarding.OnBoardingViewModel
@@ -98,6 +101,10 @@ fun NavGraph(
                 route = Route.DetailsScreen.route,
             ){
                 val detailsViewModel : DetailsViewModel = hiltViewModel()
+                if(detailsViewModel.sideEffect != null){
+                    Toast.makeText(LocalContext.current , detailsViewModel.sideEffect , Toast.LENGTH_SHORT).show()
+                    detailsViewModel.onEvent(DetailsEvent.RemoveSideEffect)
+                }
                 navController.previousBackStackEntry?.savedStateHandle?.get<Article?>("article")?.let {
                     DetailsScreen(article = it, event = detailsViewModel::onEvent , navigateUp = {navController.navigateUp()})
                 }

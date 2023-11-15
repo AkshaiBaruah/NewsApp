@@ -21,8 +21,6 @@ class DetailsViewModel @Inject constructor(
 
     var sideEffect by mutableStateOf<String?>(null)
 
-
-
     fun onEvent(event : DetailsEvent){
         when(event){
             is DetailsEvent.UpsertDeleteArticle ->{
